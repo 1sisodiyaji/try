@@ -4,9 +4,9 @@ import Image from "next/image";
 import React, { useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 
-import signImage from "../../../../public/media/images/sign.png";
-import orangeImage from "../../../../public/media/images/orangeCrop.png";
-import phoneImage from "../../../../public/media/images/phone.jpg";
+import signImage from "../../../../public/media/images/icons/bullet.svg";
+import orangeImage from "../../../../public/media/images/icons/bullet.svg";
+import phoneImage from "../../../../public/media/images/icons/bullet.svg";
 import { THANK } from "../../../constants/confirmationString";
 
 export default function Confirmation() {
