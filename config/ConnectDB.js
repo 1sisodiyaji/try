@@ -1,4 +1,5 @@
 const mysql = require('mysql2');
+const logger = require('./logger');
 
 const connectDB = mysql.createPool({
     host: process.env.DB_HOST || 'localhost',
@@ -12,9 +13,9 @@ const connectDB = mysql.createPool({
 
 connectDB.getConnection((err, connection) => {
     if (err) {
-        console.error('Error connecting to the database:', err);
+        logger.error(`Error connecting to the database: ${err.message}`); 
     } else {
-        console.log('Connected to the MySQL database.');
+        logger.success('Successfully connected to the MySQL database.'); 
         connection.release();
     }
 });
