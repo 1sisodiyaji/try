@@ -54,7 +54,7 @@ else {
   }));
 
  
-
+ 
   app.use('/api/auth', UserRoutes);
 
   app.get('/', (req, res) => {  res.send('Welcome to the Node.js Express MySQL API'); });

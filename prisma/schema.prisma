@@ -10,7 +10,7 @@ generator client {
 model User {
   id             Int      @id @default(autoincrement())
   name           String
-  username       String   @unique
+  username       String   
   email          String   @unique
   password       String
   mobilenumber   String?
@@ -20,6 +20,7 @@ model User {
   otp_expires_at DateTime?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  status         String   @default("deactivated") 
 }
 
 
