@@ -5,6 +5,7 @@ const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/ConnectDB');
 const UserRoutes = require('./routes/user.routes');
+const AIRoutes = require('./routes/ai.routes');
 const cluster = require('cluster');
 const os = require('os');
 const rateLimit = require('express-rate-limit');
@@ -56,6 +57,7 @@ else {
  
  
   app.use('/api/auth', UserRoutes);
+  app.use('/api/ai', AIRoutes);
 
   app.get('/', (req, res) => {  res.send('Welcome to the Node.js Express MySQL API'); });
 
