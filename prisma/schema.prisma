@@ -7,25 +7,92 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id             Int      @id @default(autoincrement())
-  name           String
-  username       String   
-  email          String   @unique
-  password       String
-  mobilenumber   String?
-  role           String   @default("owner")
-  logincount     Int      @default(0)
-  otp            String?
-  otp_expires_at DateTime?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  status         String   @default("deactivated") 
+model SummarizeText {
+  id        Int      @id @default(autoincrement())
+  text      String   @db.Text
+  summary   String   @db.Text
+  createdAt DateTime @default(now())
 }
 
+model User {
+  id             Int       @id @default(autoincrement())
+  name           String
+  username       String
+  email          String    @unique
+  mobilenumber   String    @unique
+  password       String
+  role           Role      @default(CUSTOMER)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  otp            String?
+  otp_expires_at DateTime?
+  status         String    @default("deactivated") 
+  logincount       Int
+  orders         Order[]
+  feedbacks      Feedback[]
+  payments       Payment[]
+}
+
+enum Role {
+  CUSTOMER
+  SUPERVISOR
+  ADMIN
+}
 
 model Order {
-  id        Int      @id @default(autoincrement())
-  total     Float
-  createdAt DateTime @default(now())
+  id          Int       @id @default(autoincrement())
+  orderType   OrderType
+  orderStatus OrderStatus @default(PENDING)
+  totalAmount Float
+  createdAt   DateTime  @default(now())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  payment     Payment?
+}
+
+enum OrderType {
+  DINE_IN
+  TAKEAWAY
+  PARCEL
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+model Feedback {
+  id          Int      @id @default(autoincrement())
+  comment     String
+  rating      Int       // Range: 1 to 5
+  feedbackType FeedbackType
+  createdAt   DateTime @default(now())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+enum FeedbackType {
+  FOOD
+  AMBIENCE
+  BEHAVIOR
+  OTHER
+}
+
+model Payment {
+  id          Int      @id @default(autoincrement())
+  paymentId   String   @unique
+  status      PaymentStatus
+  amount      Float
+  orderId     Int      @unique
+  userId      Int
+  order       Order    @relation(fields: [orderId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
 }

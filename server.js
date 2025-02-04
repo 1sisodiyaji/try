@@ -1,18 +1,20 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/ConnectDB');
-const UserRoutes = require('./routes/user.routes');
-const AIRoutes = require('./routes/ai.routes');
 const cluster = require('cluster');
 const os = require('os');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const morgan = require('morgan');   
 const logger = require('./config/logger');
-dotenv.config();
+const UserRoutes = require('./routes/user.routes');
+const OrderRoute = require('./routes/order.routes');
+const AIRoutes = require('./routes/ai.routes');
+
 connectDB;
 
 if (!cluster.isMaster) {
@@ -57,6 +59,7 @@ else {
  
  
   app.use('/api/auth', UserRoutes);
+  app.use('/api/order', OrderRoute);
   app.use('/api/ai', AIRoutes);
 
   app.get('/', (req, res) => {  res.send('Welcome to the Node.js Express MySQL API'); });
